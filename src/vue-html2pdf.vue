@@ -177,7 +177,7 @@ export default {
 			this.downloadPdf()
 		},
 
-		async downloadPdf () {
+		async downloadPdf (returnData = false) {
 			// Set Element and Html2pdf.js Options
 			const element = this.$refs.pdfContent
 			
@@ -204,14 +204,22 @@ export default {
 			}
 
 			let pdfBlobUrl
-			if (this.previewModal) {
+			
+			if (this.previewModal || this.returnData) {
 
 				pdfBlobUrl = await html2pdf().set(opt).from(element).output('bloburl')
-				this.pdfFile = pdfBlobUrl
+
+				if (!this.returnData)
+					this.pdfFile = pdfBlobUrl
 
 			} else {
 				// Download PDF
 				pdfBlobUrl = await html2pdf().set(opt).from(element).save().output('bloburl')
+			}
+
+			if (this.returnData) {
+				this.progress = 100
+				return pdfBlobUrl
 			}
 
 			const res = await fetch(pdfBlobUrl)
