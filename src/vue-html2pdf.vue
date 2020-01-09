@@ -205,11 +205,11 @@ export default {
 
 			let pdfBlobUrl
 			
-			if (this.previewModal || this.returnData) {
+			if (this.previewModal || returnData) {
 
 				pdfBlobUrl = await html2pdf().set(opt).from(element).output('bloburl')
 
-				if (!this.returnData)
+				if (!returnData)
 					this.pdfFile = pdfBlobUrl
 
 			} else {
@@ -217,7 +217,7 @@ export default {
 				pdfBlobUrl = await html2pdf().set(opt).from(element).save().output('bloburl')
 			}
 
-			if (this.returnData) {
+			if (returnData) {
 				this.progress = 100
 				return pdfBlobUrl
 			}
